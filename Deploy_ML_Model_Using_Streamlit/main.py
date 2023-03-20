@@ -2,8 +2,9 @@ import numpy as np
 import pickle
 import streamlit as st
 
-loaded_model = pickle.load(open("C:/Users/Wei/Downloads/MLProjects/ML_YT/Deploy_ML_Model_Using_Streamlit"
-                                "/trained_model.sav", "rb"))
+with open("C:/Users/Wei/Downloads/MLProjects/ML_YT/Deploy_ML_Model_Using_Streamlit/trained_model.sav", "rb") as f:
+    loaded_model = pickle.load(f)
+    loaded_scaler = pickle.load(f)
 
 
 # create a function for prediction
@@ -13,9 +14,9 @@ def diabetes_prediction(input_data):
     input_data_reshaped = input_data_as_numpy_array.reshape(1, -1)
 
     # standardised input data
-    # std_data = scaler.transform(input_data_reshaped);
+    std_data = loaded_scaler.transform(input_data_reshaped)
 
-    prediction = loaded_model.predict(input_data_reshaped)
+    prediction = loaded_model.predict(std_data)
 
     if prediction[0] == 1:
         return "This person is diabetic"
